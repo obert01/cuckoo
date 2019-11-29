@@ -31,6 +31,7 @@ try:
     import volatility.exceptions as exc
     import volatility.plugins.filescan as filescan
     import volatility.protos as protos
+    import volatility.plugins.malware.malconfscan
 
     HAVE_VOLATILITY = True
 
@@ -201,6 +202,38 @@ class VolatilityAPI(object):
                 "csrss": str(offset in ps_sources["csrss"]),
                 "session": str(offset in ps_sources["session"]),
                 "deskthrd": str(offset in ps_sources["deskthrd"]),
+            })
+
+        return dict(config={}, data=results)
+
+    def malconfscan(self):
+        """ Volatility malconfscan plugin
+        https://github.com/JPCERTCC/MalConfScan
+        @see volatility/plugins/malware/malconfscan.py
+        """
+        results = []
+        malconf = []
+        command = self.plugins["malconfscan"](self.config)
+
+        for task, vad_base_addr, end, hit, memory_model, config_data in command.calculate():
+            # strip null bytes and convert dict data to list data.
+            for i in range(len(config_data)):
+                conf = []
+                for field, value in config_data[i].iteritems():
+                    value = str(value).strip(chr(0))
+                    config_data[i][field]= value
+                    conf.append({
+                        field: value
+                        })
+                malconf.append(conf)
+
+            results.append({
+                "process_name": str(task.ImageFileName),
+                "process_id": str(task.UniqueProcessId),
+                "malware_name": str(hit),
+                "vad_base_addr": '0x' + str(vad_base_addr).zfill(8),
+                "size": '0x' + str(end - vad_base_addr + 1).zfill(8),
+                "malconf":malconf,
             })
 
         return dict(config={}, data=results)
@@ -965,6 +998,7 @@ class VolatilityManager(object):
     PLUGINS = [
         "pslist",
         "psxview",
+        "malconfscan",
         "callbacks",
         ["idt", "x86"],
         "ssdt",

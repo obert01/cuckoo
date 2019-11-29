@@ -25,6 +25,7 @@ class AnalysisRoutes:
         pages = {
             "summary": "summary/index",
             "static": "static/index",
+            "curtain": "curtain/index",
             "extracted": "extracted/index",
             "behavior": "behavior/index",
             "network": "network/index",
