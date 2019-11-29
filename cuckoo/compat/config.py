@@ -152,6 +152,10 @@ def _060_100(c):
             "enabled": True,
             "filter": False,
         },
+        "malconfscan": {
+            "enabled": True,
+            "filter": False,
+        },
         "callbacks": {
             "enabled": True,
             "filter": False,

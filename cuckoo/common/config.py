@@ -434,6 +434,10 @@ class Config(object):
                 "enabled": Boolean(True),
                 "filter": Boolean(False),
             },
+            "malconfscan": {
+                "enabled": Boolean(True),
+                "filter": Boolean(False),
+            },
             "callbacks": {
                 "enabled": Boolean(True),
                 "filter": Boolean(False),
@@ -547,6 +551,9 @@ class Config(object):
                 "enabled": Boolean(True),
             },
             "buffer": {
+                "enabled": Boolean(True),
+            },
+            "curtain": {
                 "enabled": Boolean(True),
             },
             "debug": {
