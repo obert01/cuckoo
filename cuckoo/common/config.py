@@ -337,6 +337,9 @@ class Config(object):
                 "services": String("honeyd"),
                 "timeout": Int(0),
             },
+            "curtain": {
+                "enabled": Boolean(True),
+            },            
             "reboot": {
                 "enabled": Boolean(True),
             },
